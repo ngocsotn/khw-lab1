@@ -1,6 +1,8 @@
 import json
 import my_time
 
+count_item = 0
+
 def generate_json_item():
     return {
         "number": "",
@@ -9,22 +11,32 @@ def generate_json_item():
         "price_sale": "",
         "discount_percent": "",
         "sold_count":"",
-        "link":"",
+        "url":"",
         "platform": "",
         "picture":[],
         "category":[],
-        "point": "",
-        "top_review": []
+        "point": ""
     }
 
-def generate_json_mother(time_stamp, URL):
+def generate_json_mother(time_stamp):
     data = {
         "count": "",
         "time": time_stamp,
-        "url": URL,
         "data":[]
     }
     return data
+
+def generate_new_record_file(folder_name):
+
+    current_time = str(my_time.get_current_time())
+    file_name = folder_name + current_time + ".json"
+    mother_data = generate_json_mother(current_time)
+    mother_data["count"] = 0
+    mother_data["time"] = current_time
+
+    write_json(mother_data, file_name)
+
+    return file_name
 
 def replace_data_json(new_data, filename, json_title):
     with open(filename, 'r+', encoding='utf-8') as file:
@@ -49,34 +61,36 @@ def write_json(new_data_json, filename):
     with open(filename, 'w', encoding='utf-8') as file:
         json.dump(new_data_json, file, indent = 4, ensure_ascii=False)
 
-def write_shopee_api_data_to_json(folder_name, URL, new_data_array, filename):
-    current_time = my_time.get_current_time()
-    file_name = folder_name + current_time + ".json"
 
-    
-    mother_data = generate_json_mother(current_time, URL)
-    mother_data["count"] = 0
-    mother_data["time"] = current_time
-    mother_data["url"] = URL
+def write_single_item_to_json(item, file_path, platform):
+    global count_item #using global
+    new_item = generate_json_item()
+    new_item["number"] = count_item
+    new_item["platform"] = platform
 
-    write_json(mother_data, file_name)
-    
-    count_child = 1
-    for item in new_data_array:
-        new_item = generate_json_item()
-        new_item["number"] = count_child
+    if platform == "shopee-api":
         new_item["name"] = item["ProductName"]
-        new_item["price"] = ""
         new_item["price_sale"] = item["SalePrice"]
         new_item["discount_percent"] = item["price_discount"]
-        new_item["sold_count"] = "",
-        new_item["link"] = item["LinkSEOWebsite"],
+        new_item["url"] = item["LinkSEOWebsite"]
         new_item["picture"].append(item["ProductPreviewImage"])
-        new_item["category"] = [],
-        new_item["point"]  = "",
-        new_item["top_review"] = [],
-        new_item["platform"] = "shopee"
-        count_child += 1
 
-        append_json(new_item, file_name, "data")
-        replace_data_json(count_child, file_name, "count")
+    else:
+        new_item["name"] = item["name"]
+        new_item["price"] = item["price"]
+        new_item["price_sale"] = item["price_sale"]
+        new_item["discount_percent"] = item["discount_percent"]
+        new_item["sold_count"] = item["sold_count"]
+        new_item["url"] = item["url"]
+        new_item["picture"].extend(item["picture"])
+        new_item["category"].extend(item["category"])
+        new_item["point"]  = item["point"]
+        
+    count_item += 1
+
+    append_json(new_item, file_path, "data")
+    replace_data_json(count_item, file_path, "count")
+
+def write_shopee_api_data_to_json(new_data_array, file_path):
+    for item in new_data_array:
+        write_single_item_to_json(item, file_path, "shopee-api")

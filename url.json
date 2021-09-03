@@ -1,7 +1,7 @@
 {
 	"shopee": "https://shopee.vn/flash_sale",
-	"tiki": "https://tiki.vn/deal-hot",
 	"shopee_base": "https://shopee.vn",
-	"tiki_base": "https://tiki.vn",
-	"shopee_api": "http://api.saledam.com/api/CheckSale/GetListDataByKeyWords?keywords=sale&limit=100"
+	"shopee_api": "http://api.saledam.com/api/CheckSale/GetListDataByKeyWords",
+	"tiki": "https://tiki.vn/deal-hot",
+	"tiki_base": "https://tiki.vn"
 }
