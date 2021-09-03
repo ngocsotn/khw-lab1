@@ -3,5 +3,6 @@
 	"shopee_base": "https://shopee.vn",
 	"shopee_api": "http://api.saledam.com/api/CheckSale/GetListDataByKeyWords",
 	"tiki": "https://tiki.vn/deal-hot",
-	"tiki_base": "https://tiki.vn"
+	"tiki_base": "https://tiki.vn",
+	"folder_name":"./records"
 }

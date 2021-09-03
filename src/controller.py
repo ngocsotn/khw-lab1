@@ -1,13 +1,18 @@
-import my_request
 import my_file
 import my_selenium
+import my_request
 import my_html
 
 folder_name = "./records/"
-file_path = my_file.generate_new_record_file(folder_name)
+file_path = ""
 search_keywords = ["sale", "giảm", "giá", "ngay", "mua"]
 
-my_selenium.set_scroll_max_time(50)
+my_selenium.set_scroll_max_time(100)
+
+def init(new_path):
+    global folder_name, file_path
+    folder_name = new_path
+    file_path = my_file.generate_new_record_file(folder_name)
 
 def fetch_from_api_shopee(SHOPEE_API_URL):
     global file_path
@@ -56,7 +61,7 @@ def analyze_shopee_data(URL, BASE_URL):
             deeper_link = my_html.shopee_find_deeper_link(item_data)
             item_url = BASE_URL + deeper_link.attrs['href']
             
-            browser = my_selenium.browse_single_item(browser, item_url, 1)
+            browser = my_selenium.browse_single_item(browser, item_url, 3)
             item_data = my_html.parse_html(browser.page_source)
             container_main = my_html.shopee_find_category_container(item_data)
         

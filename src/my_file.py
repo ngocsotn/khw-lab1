@@ -1,7 +1,15 @@
 import json
 import my_time
+from os import path, makedirs
 
 count_item = 0
+
+def check_exist(file_path):
+    return path.exists(file_path)
+
+def create_folder(folder_path):
+    if not check_exist(folder_path):
+        makedirs(folder_path)
 
 def generate_json_item():
     return {
@@ -60,7 +68,6 @@ def read_json(filename):
 def write_json(new_data_json, filename):
     with open(filename, 'w', encoding='utf-8') as file:
         json.dump(new_data_json, file, indent = 4, ensure_ascii=False)
-
 
 def write_single_item_to_json(item, file_path, platform):
     global count_item #using global

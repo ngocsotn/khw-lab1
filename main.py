@@ -1,25 +1,32 @@
-import controller
-import my_file
 import sys
+sys.path.insert(0, 'src')
+import my_file, controller
 
-SHOPEE_URL= my_file.read_json("url.json")["shopee"]
-SHOPEE_URL_BASE = my_file.read_json("url.json")["shopee_base"]
-SHOPEE_API_URL = my_file.read_json("url.json")["shopee_api"]
-TIKI_URL = my_file.read_json("url.json")["tiki"]
-TIKI_URL_BASE = my_file.read_json("url.json")["tiki_base"]
+SHOPEE_URL= my_file.read_json("settings.json")["shopee"]
+SHOPEE_URL_BASE = my_file.read_json("settings.json")["shopee_base"]
+SHOPEE_API_URL = my_file.read_json("settings.json")["shopee_api"]
+TIKI_URL = my_file.read_json("settings.json")["tiki"]
+TIKI_URL_BASE = my_file.read_json("settings.json")["tiki_base"]
+FOLDER_NAME = my_file.read_json("settings.json")["folder_name"] + "/"
+
+my_file.create_folder(FOLDER_NAME)
+controller.init(FOLDER_NAME)
 
 def run_all():
-    print("start fetching data from all...")
+    print("start fetching/crawling all data from shopee, tiki, shopee-api...")
     controller.analyze_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
     controller.fetch_from_api_shopee(SHOPEE_API_URL)
 
 def run_shopee():
-    print("start crawling data from shopee...")
+    print("start crawling only data from shopee...")
     controller.analyze_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
 
 def run_shopee_api():
-    print("start fetching data from shopee api...")
+    print("start fetching only data from shopee api...")
     controller.fetch_from_api_shopee(SHOPEE_API_URL)
+
+def run_tiki():
+    print("start crawling only data from tiki...")
 
 input_key = sys.argv
 print(input_key[0])
