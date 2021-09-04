@@ -12,6 +12,7 @@ TIKI_ITEM_API_URL = my_file.read_json("settings.json")["tiki_api_item"]
 TIKI_API_HEADERS = my_file.read_json("settings.json")["tiki_api_headers"]
 FOLDER_NAME = my_file.read_json("settings.json")["folder_name"] + "/"
 
+LIST_COMMANDS = ["all", "tiki", "shopee", "shopee-api"]
 input_key = sys.argv
 
 def run_all():
@@ -45,13 +46,14 @@ def run_tiki():
     except:
         print("Something wrong when crawling tiki...")
 
-if len(input_key) != 2 or str(input_key[0]) != "main.py":
+if len(input_key) != 2 or str(input_key[0]) != "main.py" or input_key[1] not in LIST_COMMANDS:
     print("command is invalid")
     print("command sample: python main.py X")
     print("X is one of these: all, tiki, shopee, shopee-api")
 else:
     my_file.create_folder(FOLDER_NAME)
     controller.init_controller(FOLDER_NAME)
+    print("...creating new json file...")
     if str(input_key[1]) == "shopee":
         run_shopee()
     elif str(input_key[1]) == "shopee-api":

@@ -4,6 +4,7 @@ from os import path, makedirs
 import time
 
 count_item = 0
+in_use = False
 
 def get_full_file_path(file_path):
     return path.abspath(file_path)
@@ -51,18 +52,30 @@ def generate_new_record_file(folder_name):
     return file_name
 
 def replace_data_json(new_data, filename, json_title):
-    with open(filename, 'r+', encoding='utf-8') as file:
-        file_data = json.load(file)
-        file_data[json_title] = new_data
-        file.seek(0)
-        json.dump(file_data, file, indent = 4, ensure_ascii=False)
+    global in_use
+
+    if not in_use:
+        in_use = True
+        with open(filename, 'r+', encoding='utf-8') as file:
+            file_data = json.load(file)
+            file_data[json_title] = new_data
+            file.seek(0)
+            json.dump(file_data, file, indent = 4, ensure_ascii=False)
+            time.sleep(0.01)
+            in_use = False
 
 def append_json(new_data_json, filename, array_name):
-    with open(filename, 'r+', encoding='utf-8') as file:
-        file_data = json.load(file)
-        file_data[array_name].append(new_data_json)
-        file.seek(0)
-        json.dump(file_data, file, indent = 4, ensure_ascii=False)
+    global in_use
+
+    if not in_use:
+        in_use = True
+        with open(filename, 'r+', encoding='utf-8') as file:
+            file_data = json.load(file)
+            file_data[array_name].append(new_data_json)
+            file.seek(0)
+            json.dump(file_data, file, indent = 4, ensure_ascii=False)
+            time.sleep(0.01)
+            in_use = False
     
 def read_json(filename):
     with open(filename, 'r', encoding='utf-8') as file:

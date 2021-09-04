@@ -21,7 +21,7 @@ tiki_max_product = 25
 
 search_keywords = ["sale", "giảm", "giá", "ngay", "mua", "hot", "deal", "mã", "nhập", "kho"]
 
-my_selenium.set_scroll_max_time(1) #300
+my_selenium.set_scroll_max_time(100) #100
 
 # codes
 def init_controller(new_path):
@@ -31,7 +31,7 @@ def init_controller(new_path):
     full_file_path = my_file.get_full_file_path(file_path)
 
 def run_all_fetch(SHOPEE_URL, SHOPEE_URL_BASE, SHOPEE_API_URL, TIKI_URL, TIKI_URL_BASE, API_LIST, API_ITEM, TIKI_API_HEADERS):
-    time.sleep(2)
+    time.sleep(5)
     thread_shopee = threading.Thread(target= selenium_shopee_data, args=(SHOPEE_URL, SHOPEE_URL_BASE, ))
     thread_shopee_api = threading.Thread(target= fetch_from_api_shopee, args=(SHOPEE_API_URL,))
     thread_tiki = threading.Thread(target= continuous_request_tiki,args=(TIKI_URL, TIKI_URL_BASE, API_LIST, API_ITEM, TIKI_API_HEADERS))
@@ -48,7 +48,7 @@ def run_all_fetch(SHOPEE_URL, SHOPEE_URL_BASE, SHOPEE_API_URL, TIKI_URL, TIKI_UR
         print("Something wrong when fetching api...")
 
     try:
-        time.sleep(0.5)
+        time.sleep(0.8)
         thread_tiki.start()
     except:
         print("Something wrong when crawling tiki...")
@@ -100,7 +100,7 @@ def selenium_shopee_data(URL, BASE_URL):
         item_picture.append(my_html.shopee_find_picture(item))
 
         # đi chi tiết
-        browser = my_selenium.browse_single_item(browser, item_url, 3)
+        browser = my_selenium.browse_single_item(browser, item_url, 2.5)
         item_data = my_html.parse_html(browser.page_source)
 
         # tìm category
@@ -111,7 +111,7 @@ def selenium_shopee_data(URL, BASE_URL):
             deeper_link = my_html.shopee_find_deeper_link(item_data)
             item_url = BASE_URL + deeper_link.attrs['href']
             
-            browser = my_selenium.browse_single_item(browser, item_url, 3)
+            browser = my_selenium.browse_single_item(browser, item_url, 2.5)
             item_data = my_html.parse_html(browser.page_source)
             container_main = my_html.shopee_find_category_container(item_data)
         
@@ -336,10 +336,10 @@ def continuous_request_tiki(URL, BASE_URL, API_LIST, API_ITEM ,TIKI_API_HEADERS)
                 print(tiki_prefix_log + "...creating new cookies")
                 time.sleep(4)
             handling_single_tiki_api_data(item, BASE_URL, API_ITEM, TIKI_API_HEADERS, tiki_current_product)
-            time.sleep(0.01)
+            time.sleep(0.05)
             tiki_current_product += 1
 
         tiki_page += 1
-        time.sleep(1)
+        time.sleep(0.05)
 
     print(tiki_prefix_log + "finishing task...")

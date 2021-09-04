@@ -34,9 +34,9 @@ def browse_single_item(browser, URL, await_time):
     # mở tab mới
     # browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't') 
     browser.get(URL)
-    time.sleep(await_time + 1)
-    scrolling_down_slowly(browser, 250)
-    time.sleep(await_time + 2)
+    time.sleep(await_time)
+    scrolling_down_slowly(browser, 150)
+    time.sleep(0.05)
     # đóng tab vừa mở
     # browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'w')
     return browser
