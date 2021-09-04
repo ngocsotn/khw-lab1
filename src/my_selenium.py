@@ -32,36 +32,40 @@ def scrolling_down_slowly(browser, height):
 
 def browse_single_item(browser, URL, await_time):
     # mở tab mới
-    browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't') 
+    # browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't') 
     browser.get(URL)
     time.sleep(await_time + 1)
     scrolling_down_slowly(browser, 250)
     time.sleep(await_time + 2)
     # đóng tab vừa mở
-    browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'w') 
+    # browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'w')
     return browser
 
-def browse_scrolling_down(browser, loading_class_name):
+def browse_scrolling_down(browser, loading_class_name, platform_prefix):
     scroll_current_time = 0
     last_page_height = 1
     global scroll_max_time, scroll_await_time, first_scroll_size
     
-    print("Scrolling down the website, please wait...")
+    print(platform_prefix + "Scrolling down the website, please wait...")
     scrolling_down_slowly(browser, 200)
 
     while scroll_current_time < scroll_max_time:
-        loading_element = browser.find_element_by_class_name(loading_class_name)
-        if loading_element:
-            scroll_current_time += 1
+        loading_element = None
+        try:
+            loading_element = browser.find_element_by_class_name(loading_class_name)
+            if loading_element != None:
+                scroll_current_time += 1
+                if scroll_current_time >= scroll_max_time:
+                    break
+                actions = ActionChains(browser)
+                actions.move_to_element(loading_element).perform()
+                scrolling_down_slowly(browser, 50)
+                # print("Internet to slow, wait to loading")
+                time.sleep(scroll_await_time *2 +1)
+        except:
+            scroll_current_time = scroll_max_time
+            loading_element = None
 
-            if scroll_current_time >= scroll_max_time:
-                break
-            actions = ActionChains(browser)
-            actions.move_to_element(loading_element).perform()
-            scrolling_down_slowly(browser, 50)
-            # print("Internet to slow, wait to loading")
-            time.sleep(scroll_await_time *2 +1)
-            
         if scroll_current_time >= scroll_max_time:
             break
         scroll_current_time += 1
@@ -73,22 +77,25 @@ def browse_scrolling_down(browser, loading_class_name):
             break
         last_page_height = new_page_height
     if scroll_current_time >= scroll_max_time:
-        print("\nscroll max times in settings reached")
+        print()
+        print(platform_prefix + "scroll max times in settings reached")
     else:
-        print("\npage size maximum reached")
+        print()
+        print(platform_prefix + "page size maximum reached")
     
     return browser
 
-def fetching_shopee_tiki(URL, await_time, loading_class_name):
+def fetching_shopee_tiki(URL, await_time, loading_class_name, platform_prefix):
     browser = browse_with_chrome()
 
     browser.get(URL)
 
-    print("...await loading site for " + str(await_time) + " sec")
+    print(platform_prefix+"...await loading site for " + str(await_time) + " sec")
     time.sleep(await_time)
 
-    browser = browse_scrolling_down(browser, loading_class_name)
+    browser = browse_scrolling_down(browser, loading_class_name, platform_prefix)
 
-    print("\nfetching data now...")
+    print()
+    print(platform_prefix +"fetching data now...")
 
     return browser

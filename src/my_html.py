@@ -16,10 +16,15 @@ def shopee_all_items_im_sale_page(html_data):
 
 def shopee_find_picture(html_data):
     picture = html_data.find(".flash-sale-item-card__animated-image", first=True)
-    picture = ""
+    
     if picture != None:
-        picture = picture.attrs['style']
-        picture = picture[picture.index('http'):picture.index('")')]
+        try:
+            picture = picture.attrs['style']
+            picture = picture[picture.index('http'):picture.index('")')]
+        except:
+            picture = ""
+    else:
+        picture = ""
     return picture
 
 def shopee_find_category_container(html_deep_data):
@@ -28,9 +33,12 @@ def shopee_find_category_container(html_deep_data):
     if container != None:
         container_main = container[0]
         for consub in container:
-            if len(consub.attrs['class']) == 1:
-                container_main = consub
-                break
+            try:
+                if len(consub.attrs['class']) == 1:
+                    container_main = consub
+                    break
+            except:
+                container_main = ""
     return container_main
 
 def shopee_find_deeper_link(html_deep_data):
@@ -93,7 +101,10 @@ def tiki_all_items_im_sale_page(html_data):
 def tiki_find_picture(html_data):
     picture = html_data.find("img", first=True)
     if picture != None:
-        picture = picture.attrs['src']
+        try:
+            picture = picture.attrs['src']
+        except:
+            picture = ""
     else:
         picture = ""
 
@@ -119,6 +130,7 @@ def tiki_find_category_and_name(html_deep_data_container):
 
     for item in categories_raw:
         category.append(str(item.text))
+        
     if len(categories_raw) > 1 :
         name = category.pop()
         category.pop(0) # trang chủ

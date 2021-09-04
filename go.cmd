@@ -1,1 +1,1 @@
-python main.py tiki
+python main.py all

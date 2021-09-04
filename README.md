@@ -10,6 +10,10 @@ This app will crawl products that are on sale on tiki, shopee.
 The information crawled like name, picture, discount percent, sale price, rating point...
 This app also request API to fetch shopee data
 
+## System requirements
+- Having at least 8GB of RAM
+- CPU Power at least have 2 Physical Cores, base Clock at least 2.4Ghz
+
 ## How to run
  - Must installed python 3 at least version 3.5 and make env path "python"
  - Must install these libraries before run:

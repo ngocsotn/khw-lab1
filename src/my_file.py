@@ -1,6 +1,7 @@
 import json
 import my_time
 from os import path, makedirs
+import time
 
 count_item = 0
 
@@ -73,14 +74,14 @@ def write_json(new_data_json, filename):
         json.dump(new_data_json, file, indent = 4, ensure_ascii=False)
 
 def write_single_item_to_json(item, file_path, platform):
-    global count_item #using global
+    global count_item
     new_item = generate_json_item()
     new_item["number"] = count_item
     new_item["platform"] = platform
 
     if platform == "shopee-api":
         new_item["name"] = item["ProductName"]
-        new_item["price_sale"] = item["SalePrice"]
+        new_item["price_sale"] = item["SalePrice"].replace("đ", "")
         new_item["discount_percent"] = item["price_discount"]
         new_item["url"] = item["LinkSEOWebsite"]
         new_item["picture"].append(item["ProductPreviewImage"])
@@ -100,6 +101,7 @@ def write_single_item_to_json(item, file_path, platform):
 
     append_json(new_item, file_path, "data")
     replace_data_json(count_item, file_path, "count")
+    time.sleep(0.1)
 
 def write_shopee_api_data_to_json(new_data_array, file_path):
     for item in new_data_array:
