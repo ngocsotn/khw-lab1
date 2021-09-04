@@ -7,6 +7,9 @@ SHOPEE_URL_BASE = my_file.read_json("settings.json")["shopee_base"]
 SHOPEE_API_URL = my_file.read_json("settings.json")["shopee_api"]
 TIKI_URL = my_file.read_json("settings.json")["tiki"]
 TIKI_URL_BASE = my_file.read_json("settings.json")["tiki_base"]
+TIKI_LIST_API_URL = my_file.read_json("settings.json")["tiki_api_list"]
+TIKI_ITEM_API_URL = my_file.read_json("settings.json")["tiki_api_item"]
+TIKI_API_HEADERS = my_file.read_json("settings.json")["tiki_api_headers"]
 FOLDER_NAME = my_file.read_json("settings.json")["folder_name"] + "/"
 
 input_key = sys.argv
@@ -15,14 +18,14 @@ def run_all():
     print("start fetching/crawling all data from shopee, tiki, shopee-api...")
     if __name__ == '__main__' :
         try:
-            controller.run_all_fetch(SHOPEE_URL, SHOPEE_URL_BASE, SHOPEE_API_URL, TIKI_URL, TIKI_URL_BASE)
+            controller.run_all_fetch(SHOPEE_URL, SHOPEE_URL_BASE, SHOPEE_API_URL, TIKI_URL, TIKI_URL_BASE, TIKI_LIST_API_URL, TIKI_ITEM_API_URL, TIKI_API_HEADERS)
         except:
             print("all broken...")
 
 def run_shopee():
     print("start crawling only data from shopee...")
     try:
-        controller.analyze_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
+        controller.selenium_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
     except:
         print("Something wrong when crawling shopee...")
 
@@ -35,8 +38,10 @@ def run_shopee_api():
 
 def run_tiki():
     print("start crawling only data from tiki...")
+    
     try:
-        controller.analyze_tiki_data(TIKI_URL, TIKI_URL_BASE)
+        # controller.selenium_tiki_data(TIKI_URL, TIKI_URL_BASE)
+        controller.continuous_request_tiki(TIKI_URL, TIKI_URL_BASE, TIKI_LIST_API_URL, TIKI_ITEM_API_URL, TIKI_API_HEADERS)
     except:
         print("Something wrong when crawling tiki...")
 

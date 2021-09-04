@@ -99,3 +99,16 @@ def fetching_shopee_tiki(URL, await_time, loading_class_name, platform_prefix):
     print(platform_prefix +"fetching data now...")
 
     return browser
+
+def browse_get_all_cookies(URL, await_time, platform_prefix):
+    browser = browse_with_chrome()
+    browser.get(URL)
+    print(platform_prefix + "...await loading site for " + str(await_time) + " sec")
+    time.sleep(await_time)
+    scrolling_down_slowly(browser, 100)
+    time.sleep(await_time)
+    
+    cookies = browser.get_cookies()
+    browser.close()
+
+    return cookies

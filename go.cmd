@@ -1,1 +1,1 @@
-python main.py all
+python main.py shopee

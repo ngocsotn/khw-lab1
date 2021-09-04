@@ -4,5 +4,14 @@
 	"shopee_api": "http://api.saledam.com/api/CheckSale/GetListDataByKeyWords",
 	"tiki": "https://tiki.vn/deal-hot",
 	"tiki_base": "https://tiki.vn",
+	"tiki_api_list":"https://tiki.vn/api/v2/widget/deals/collection",
+	"tiki_api_item":"https://tiki.vn/api/v2/products/",
+	"tiki_api_headers": {
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36",
+		"sec-fetch-site": "same-origin",
+		"sec-fetch-mode": "cors",
+		"sec-fetch-dest": "empty",
+		"sec-ch-ua-platform": "Windows"
+	},
 	"folder_name":"./records"
 }

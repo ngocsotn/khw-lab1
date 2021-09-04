@@ -82,6 +82,8 @@ def write_single_item_to_json(item, file_path, platform):
     if platform == "shopee-api":
         new_item["name"] = item["ProductName"]
         new_item["price_sale"] = item["SalePrice"].replace("đ", "")
+        while(new_item["price_sale"].find(".") != -1):
+            new_item["price_sale"] = new_item["price_sale"].replace(".","")
         new_item["discount_percent"] = item["price_discount"]
         new_item["url"] = item["LinkSEOWebsite"]
         new_item["picture"].append(item["ProductPreviewImage"])
@@ -89,7 +91,11 @@ def write_single_item_to_json(item, file_path, platform):
     else:
         new_item["name"] = item["name"]
         new_item["price"] = item["price"]
+        while(new_item["price"].find(".") != -1):
+            new_item["price"] = new_item["price"].replace(".","")
         new_item["price_sale"] = item["price_sale"]
+        while(new_item["price_sale"].find(".") != -1):
+            new_item["price_sale"] = new_item["price_sale"].replace(".","")
         new_item["discount_percent"] = item["discount_percent"]
         new_item["sold_count"] = item["sold_count"]
         new_item["url"] = item["url"]
