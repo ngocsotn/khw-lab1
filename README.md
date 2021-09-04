@@ -19,7 +19,7 @@ This app also request API to fetch shopee data
  - Must install these libraries before run:
     - **requests-html**
     - **selenium**
-    - **requests_html**
+
  - Must installed Chrome browser, at least version 92.0
  - Run this command to crawl all data from shopee, tiki and request shopee api
  ```
