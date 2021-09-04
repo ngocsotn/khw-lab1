@@ -5,7 +5,7 @@ import time
 
 # 1 vài cài đặt
 scroll_await_time = 1
-scroll_max_time = 1 #500
+scroll_max_time = 1 #200
 first_scroll_size = 180
 
 selenium_drivers_downloads =  {
@@ -26,7 +26,7 @@ def browse_with_chrome():
     return browser
 
 def scrolling_down_slowly(browser, height):
-    for i in range(1, height, 5):
+    for i in range(1, height, 2):
         browser.execute_script("window.scrollTo(0, window.scrollY + {});".format(i))
         time.sleep(0.05)
 
@@ -34,9 +34,9 @@ def browse_single_item(browser, URL, await_time):
     # mở tab mới
     browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't') 
     browser.get(URL)
-    time.sleep(await_time)
-    scrolling_down_slowly(browser, 200)
-    time.sleep(await_time)
+    time.sleep(await_time + 1)
+    scrolling_down_slowly(browser, 250)
+    time.sleep(await_time + 2)
     # đóng tab vừa mở
     browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'w') 
     return browser
@@ -44,7 +44,7 @@ def browse_single_item(browser, URL, await_time):
 def browse_scrolling_down(browser, loading_class_name):
     scroll_current_time = 0
     last_page_height = 1
-    global scroll_max_time
+    global scroll_max_time, scroll_await_time, first_scroll_size
     
     print("Scrolling down the website, please wait...")
     scrolling_down_slowly(browser, 200)
@@ -79,21 +79,7 @@ def browse_scrolling_down(browser, loading_class_name):
     
     return browser
 
-def fetching_shopee(URL, await_time, loading_class_name):
-    browser = browse_with_chrome()
-
-    browser.get(URL)
-
-    print("...await loading site for " + str(await_time) + " sec")
-    time.sleep(await_time)
-
-    browser = browse_scrolling_down(browser, loading_class_name)
-
-    print("\nfetching data now...")
-
-    return browser
-
-def fetching_tiki(URL, await_time, ):
+def fetching_shopee_tiki(URL, await_time, loading_class_name):
     browser = browse_with_chrome()
 
     browser.get(URL)

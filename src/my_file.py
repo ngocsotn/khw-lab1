@@ -4,6 +4,9 @@ from os import path, makedirs
 
 count_item = 0
 
+def get_full_file_path(file_path):
+    return path.abspath(file_path)
+
 def check_exist(file_path):
     return path.exists(file_path)
 

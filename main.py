@@ -10,23 +10,41 @@ TIKI_URL_BASE = my_file.read_json("settings.json")["tiki_base"]
 FOLDER_NAME = my_file.read_json("settings.json")["folder_name"] + "/"
 
 my_file.create_folder(FOLDER_NAME)
-controller.init(FOLDER_NAME)
+controller.init_controller(FOLDER_NAME)
 
 def run_all():
     print("start fetching/crawling all data from shopee, tiki, shopee-api...")
-    controller.analyze_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
-    controller.fetch_from_api_shopee(SHOPEE_API_URL)
+    try:
+        controller.analyze_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
+    except:
+        print("Something wrong when crawling shopee...")
+
+    try:
+        controller.fetch_from_api_shopee(SHOPEE_API_URL)
+    except:
+        print("Something wrong when fetching api...")
 
 def run_shopee():
     print("start crawling only data from shopee...")
-    controller.analyze_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
+    try:
+        controller.analyze_shopee_data(SHOPEE_URL, SHOPEE_URL_BASE)
+    except:
+        print("Something wrong when crawling shopee...")
 
 def run_shopee_api():
     print("start fetching only data from shopee api...")
-    controller.fetch_from_api_shopee(SHOPEE_API_URL)
+    try:
+        controller.fetch_from_api_shopee(SHOPEE_API_URL)
+    except:
+        print("Something wrong when fetching api...")
 
 def run_tiki():
     print("start crawling only data from tiki...")
+    controller.analyze_tiki_data(TIKI_URL, TIKI_URL_BASE)
+    # try:
+    #     controller.analyze_tiki_data(TIKI_URL, TIKI_URL_BASE)
+    # except:
+    #     print("Something wrong when crawling tiki...")
 
 input_key = sys.argv
 print(input_key[0])
@@ -41,3 +59,5 @@ else:
         run_shopee_api()
     elif str(input_key[1]) == "all":
         run_all()
+    elif str(input_key[1]) == "tiki":
+        run_tiki()
