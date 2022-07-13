@@ -40,7 +40,7 @@ This app also request API to fetch shopee data
  ```
  
  
-## all khb-lab (3 part):
+## All khb-lab (3 part):
 -  [khb-lab1](https://github.com/ngocsotn/khw-lab1)
 -  [khb-lab2](https://github.com/ngocsotn/khw-lab2)
 -  [khb-lab3](https://github.com/ngocsotn/khw-lab3)
